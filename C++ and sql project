@@ -1,0 +1,334 @@
+//header files
+#include<iostream>
+#include<windows.h>
+#include<string>
+#include<mysql.h>
+#include<mysqld_error.h>
+
+using namespace std;
+const char* HOST="localhost";
+const char* USER="root";
+const char* PSWD="root";
+const char* DB="project";
+
+//blood bank
+class BloodBank
+{
+public:
+    static int bloodgroup[8];
+};
+int BloodBank::bloodgroup[]={2,2,2,2,2,2,2,2};
+
+// admin class
+class Admin
+{
+	public:
+		string Adname;
+		string Password;
+		
+		Admin()
+		{
+			Adname="BloodBank";
+			Password="Iamsneha";
+		}
+		void login()
+		{
+			string str;
+			cout<<"\n\n\t\t\t\t\tEnter Password : ";
+			cin>>str;
+			if(  Password==str)
+        		{
+					cout<<"\t\t\t\t\tWelcome!!!"<<endl;
+           			Display1();
+				}
+        	else
+        	{
+            	cout<<"\t\tPlease contact the Admin to become an Admin"<<endl;
+            	Sleep(5000);
+            	system("cls");
+			}
+	}
+	void Display1()
+	{
+		cout<<"\t\t\t\t\tAvailable Blood Group Packets : "<<endl;
+		cout<<"\n\t\t\t\t\t 1. A +ve : " << BloodBank::bloodgroup[0]<<endl;
+		cout<<"\t\t\t\t\t 2. A -ve : " << BloodBank::bloodgroup[1]<<endl;
+		cout<<"\t\t\t\t\t 3. B +ve : " << BloodBank::bloodgroup[2]<<endl;
+		cout<<"\t\t\t\t\t 4. B -ve : " << BloodBank::bloodgroup[3]<<endl;
+		cout<<"\t\t\t\t\t 5. AB +ve : " << BloodBank::bloodgroup[4]<<endl;
+		cout<<"\t\t\t\t\t 6. AB -ve : " << BloodBank::bloodgroup[5]<<endl;
+		cout<<"\t\t\t\t\t 7. O +ve : " << BloodBank::bloodgroup[6]<<endl;
+		cout<<"\t\t\t\t\t 8. O -ve : " << BloodBank::bloodgroup[7]<<endl;
+		cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+		cout<<"\n\t\t\t\t\tPress 1 to go to home page : ";
+		int m;
+		cin>>m;
+		if(m==1)
+		{
+		system("cls");	}
+	}
+	
+};
+
+class Donor
+{
+	private:
+	 string name;
+	 char gender;
+	 string Blood;
+	 string type;
+	 public:
+	  int c,x;
+	 
+	 public:
+	 	void setname(string s)
+	 	{
+	 		name=s;
+		 }
+		 void setgender(char c)
+	 	{
+	 		gender=c;
+		 }
+	
+		void setblood(string bl)
+		{
+			Blood=bl;
+		}
+		void settype(string t)
+		{
+			type=t;
+		}
+		string getname()
+		{
+			return name;
+		}
+		char getgender()
+		{
+			return gender;
+		}
+		string getblood()
+		{
+			return Blood;
+		}
+		string gettype()
+		{
+			return type;
+		}
+		void bloodpacket(int n)
+		{
+			x=n;
+		}
+		void Display2()
+		{
+			cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~YOUR DATA~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+			cout<<"\t\t\t\t\tName : "<<name<<endl;
+			cout<<"\t\t\t\t\tGender : "<<gender<<endl;
+			cout<<"\t\t\t\t\tBlood Group : "<<Blood<<type<<endl;
+			cout<<"\t\t\t\t\tPackets of Blood : "<<x<<endl;
+			cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+			cout<<"\n\t\t\t\t\tPress 1 to go to home page : ";
+			int m;
+			cin>>m;
+			if(m==1)
+			{
+			system("cls");
+			}
+		}
+	};
+class Patient
+{
+	private:
+		string name1;
+		string Blood1;
+		string type1;
+		
+		public:
+		 void setname1(string s){
+		 	name1=s;
+		 }
+		 void setblood1(string b)
+		 {
+		 	Blood1=b;
+		 }
+		 void settype(string t)
+		 {
+		 	type1=t;
+		 }
+		 string getname1()
+		 {
+		 	return name1;
+		 }
+		 string getblood1()
+		 {
+		 	return Blood1;
+		 }
+		 string gettype()
+		 {
+		 	return type1;
+		 }
+};
+
+int main()
+{
+	Admin a;
+	Patient p;
+	Donor d;
+	cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+	cout<<"|                                      BLOOD BANK MANAGEMENT SYSTEM                                               |"<<endl;
+	cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+	MYSQL* conn;
+	conn= mysql_init(NULL);
+	if(!mysql_real_connect(conn,HOST,USER,PSWD,DB,3306,NULL,0))
+	{
+		cout<<"\t\t\tERROR : "<<mysql_error(conn)<<endl;
+		
+	}
+	else
+	{
+		cout<<"\n\t\t\t\tEntered in Database successfully."<<endl;
+	}
+	int op;	
+	cout<<"\t\t\t\tPress 1 to continue and 0 to exit :";
+	cin>>op;
+	system("cls");
+	
+	while(op!=0)
+	{
+		
+		cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+		cout<<"|                                        BLOOD BANK MANAGEMENT SYSTEM                                             |"<<endl;
+		cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+		cout<<"\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~HOME PAGE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+		cout<<"\n\n\t\t\t\tPRESS : "<<endl;
+		cout<<"\n\t\t\t\t\t1. Login as an Admin"<<endl;
+		cout<<"\t\t\t\t\t2. Login as a Donor"<<endl;
+		cout<<"\t\t\t\t\t3. Login as a Patient"<<endl;
+		cout<<"\n\t\t\t\t Press 0 to exit..."<<endl;
+		int choice;
+		cout<<"\n\n\n\t\t\t\tEnter your choice : ";
+		cin>>choice;
+		cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+		Sleep(3000);
+		system("cls");
+		if(choice==1)
+		{
+			cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+			cout<<"|                                        BLOOD BANK MANAGEMENT SYSTEM                                             |"<<endl;
+			cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+			cout<<"\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ADMIN SECTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+			a.login();
+		}
+		else if(choice==2)
+		{
+			system("cls");
+			cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+			cout<<"|                                      BLOOD BANK MANAGEMENT SYSTEM                                               |"<<endl;
+			cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+			string nm, B,ty;
+			char gd;
+			int agge;
+			cout<<"\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~DONOR SECTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+			 cout<<"\n\n\t\t\t\t\tEnter Your Name : ";
+		    cin>>nm; 
+		    d.setname(nm);
+		    cout<<"\t\t\t\t\tEnter Your Gender(F/M) : ";
+		    cin>>gd;
+		    d.setgender(gd);
+		    cout<<"\t\t\t\t\tEnter Your Blood Group (A,B,AB,O) : ";
+		    cin>>B;
+		    d.setblood(B);
+		    cout<<"\t\t\t\t\tEnter Blood Type(+ve/-ve) : ";
+		    cin>>ty;
+		     d.settype(ty);
+		    string SIGNUP="INSERT INTO DONOR1 (Name,Gender,BloodGroup,BloodType) VALUES('"+d.getname()+"','"+d.getgender()+"','"+d.getblood()+"','"+d.gettype()+"')";
+		    if (mysql_query(conn,SIGNUP.c_str())){
+		    	cout<<"\n\n\t\tERROR : "<<mysql_error(conn)<<endl;
+		    	cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+			}
+		   
+		    else
+		    {
+		    	cout<<"\t\t\t\tFOR MORE CLARITY \n\t\t\t\tPress the no. of blood you're going to donate-"<<endl;
+		    Sleep(1000);
+		    cout<<"\t\t\t\t\t0 = A +ve"<<endl<<"\t\t\t\t\t1 = A -ve"<<endl<<"\t\t\t\t\t2 = B +ve"<<endl<<
+   			 "\t\t\t\t\t3 = B -ve"<<endl<<"\t\t\t\t\t4 = AB +ve"<<endl<<"\t\t\t\t\t5 = AB -ve"<<endl<<
+   			 "\t\t\t\t\t6 = O +ve"<<endl<<"\t\t\t\t\t7 = O -ve"<<endl;
+		   int c;
+		   cout<<"\t\t\t\tEnter : ";
+		    cin>>c;
+		    cout<<"\n\t\t\t\tHow many packets of blood will you donate???"<<endl;
+		    int x;
+		    cout<<"\t\t\t\tEnter : ";
+		    cin>>x;
+		    d.bloodpacket(x);
+		    BloodBank::bloodgroup[c]+=x;
+		    char ch;
+		    cout<<"\n\t\t\t\tDo you want your information to be displayed now(Y/N)";
+		    cin>>ch;
+		    
+		    if(ch=='Y'||ch=='y')
+		    	d.Display2();
+			}
+		}
+		else if(choice==3)
+		{
+			system("cls");
+			cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+			cout<<"|                                      BLOOD BANK MANAGEMENT SYSTEM                                               |"<<endl;
+			cout<<"------------------------------------------------------------------------------------------------------------------"<<endl;
+			string nm1,b1,ty1;
+			cout<<"\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PATIENT SECTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+			cout<<"\n\n\t\t\t\t\tEnter Your Name : ";
+			cin>>nm1;
+			p.setname1(nm1);
+			cout<<"\t\t\t\t\tEnter Your Blood Group (A,B,AB,O) : ";
+		    cin>>b1;
+		    p.setblood1(b1);
+		    cout<<"\t\t\t\t\tEnter Blood Type(+ve/-ve) : ";
+		    cin>>ty1;
+		    p.settype(ty1);
+		    string SIGNIN="INSERT INTO Patient (Name,BloodGroup,BloodType) VALUES('"+p.getname1()+"','"+p.getblood1()+"','"+p.gettype()+"')";
+		    if (mysql_query(conn,SIGNIN.c_str())){
+		    	cout<<"\n\n\t\t\t\tERROR : "<<mysql_error(conn)<<endl;
+			}
+		    else
+		    {
+		    	cout<<"\n\t\t\t\tFOR MORE CLARITY \n\t\t\t\tPress the no. of blood you need- "<<endl;
+		    Sleep(1000);
+		    cout<<"\t\t\t\t\t\t0 = A +ve"<<endl<<"\t\t\t\t\t\t1 = A -ve"<<endl<<"\t\t\t\t\t\t2 = B +ve"<<endl<<
+   			 "\t\t\t\t\t\t3 = B -ve"<<endl<<"\t\t\t\t\t\t4 = AB +ve"<<endl<<"\t\t\t\t\t\t5 = AB -ve"<<endl<<
+   			 "\t\t\t\t\t\t6 = O +ve"<<endl<<"\t\t\t\t\t\t7 = O -ve"<<endl;
+   			 int b;
+   			  cout<<"\t\t\t\tEnter : ";
+   			 cin>>b;
+   			 if(BloodBank::bloodgroup[b]>0)
+   			 {
+   			 	BloodBank::bloodgroup[b]--;
+				cout<<"\n\t\t\t\tOne blood packet will be donated to you."<<endl;
+   			 	cout<<"\t\t\t\tLogin again for more blood packets.";
+   			 	Sleep(2000);
+   			 	cout<<"\n\t\t\t\t\tPress 1 to go to home page : ";
+				int m;
+				cin>>m;
+				if(m==1)
+				{
+				system("cls");
+				}
+	   			 	cout<<endl;
+				}
+			else
+			{
+				cout<<"\n\t\t\t\tCompatible Blood group isn't available right now."<<endl;
+				cout<<"\t\t\t\tWe're very sorry for this inconvenience. "<<endl;
+				cout<<"\n\t\t\t\t\tPress 1 to go to home page : ";
+				int m;
+				cin>>m;
+				if(m==1)
+				{
+				system("cls");
+				}
+			}	
+		}
+	}
+		
+}}
